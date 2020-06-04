@@ -38,6 +38,22 @@ void Sequence::insert(double newValue)
 	if (currentSize > maxSize)
 	{
 		maxSize *= 2; //double max size if array is full
+		double tempArr[maxSize];
+		
+		for(int i = 0; i < currentSize; i++)
+		{
+		    tempArr[i] = newArr[i];
+		}
+		
+		delete[] newArr;
+		
+		newArr = new double[maxSize];
+		
+		for(int i = 0; i < currentSize; i++)
+		{
+		    newArr[i] = tempArr[i];
+		}
+		
 	}
 
 	newArr[currentSize] = newValue;
@@ -133,25 +149,16 @@ double Sequence::stddev()
 
 } //returns a double equal to the standard deviation of the values in the Sequence; the standard deviation is the square root of the average of the squared differences from the mean: sd = root(sum(difference2)/n); you may use the sqrt function in the cmath library.
 
-Sequence Sequence::concatenate(Sequence &obj)
+Sequence Sequence::concatenate(const Sequence &obj)
 {
 	
-	//toBeReturnedObject.insert(this->newArr, this->currentSize);
+	Sequence toBeReturnedObject;
 	
-	for (int i = 0; i < obj.currentSize; i++) {
-	    cout << "obj: " << *(obj.getNewArr() + i) << endl;
-	    
-	}
+	toBeReturnedObject.insert(this->newArr, this->currentSize);
 	
-	insert(obj.newArr, obj.currentSize);
-	
-	for(int i = 0; i < 20; ++i)
-	{
-	    cout << newArr[i] << endl;
-	}
+	toBeReturnedObject.insert(obj.newArr, obj.currentSize);
 
-	return *this;
-
+    return toBeReturnedObject;
 
 } //returns a Sequence object that contains the contents of the calling object followed by the contents of its constant Sequence reference parameter; the size of the returned object's underlying array should be the greater of 2 and the number of values stored in it
 
@@ -159,14 +166,44 @@ double* Sequence::getNewArr() {
 	return newArr;
 }
 
+/*
+
 int main()
 {
+	Sequence sq1;
+	double numbers[] = { 1.1,2.2,3.3 };
+	int n = 3;
+ 
+	sq1.insert(3.14);
+	sq1.insert(numbers, n);
+	
+	for (int i = 0; i < 8; i++) {
+		cout << "elements1: " << sq1.getNewArr()[i] << endl;
+	}
+ 
+	int pies = sq1.find(3.14);
+	int sqSize = sq1.size();
+	double sqSum = sq1.sum();
+	double sqMean = sq1.mean();
+	double sqMedian = sq1.median();
+	double sqStddev = sq1.stddev();
+ 
+	Sequence sq2(sq1);
+	Sequence sq3 = sq2.concatenate(sq1);
+ 
+	cout << "end basic test" << endl;
+}
 
+*/
+
+int main()
+{
+    /*
+    
 	cout << "test\n\n";
 
 	Sequence test;
 	
-    /*
 
 	test.insert(5);
 	
@@ -180,33 +217,17 @@ int main()
 	test.insert(-6.9);
 	test.insert(6.9);
 	*/
-	
-	/*
-	
-	double temp[] = {4, 7, 10};
-	
-	double temp2[] = {11, 17, 19, 23};
-	
-	test.insert(temp, 3);
-	
-	test.insert(temp2, 4);
-	
-	*/
 
 	
-	double temp1[] = {1, 3, 5, 7, 9, 11, 13};
+	double temp1[7] = {1, 3, 5, 7, 9, 11, 13};
 	
 	Sequence sq1;
 	sq1.insert(temp1, 7);
 	
-	for (int i = 0; i < 8; i++) {
-		cout << "elements: " << sq1.getNewArr()[i] << endl;
-	}
-	
-	double temp2[] = {2,4,6,7,10,12, 14, 16, 18, 20, 22, 24, 26, 28};
+	double temp2[6] = {2,4,6,7,10,12};
 	
 	Sequence sq2;
-	sq2.insert(temp2, 14);
+	sq2.insert(temp2, 6);
 	
 	Sequence sq3;
 	sq3 = sq2.concatenate(sq1);
@@ -215,12 +236,11 @@ int main()
     
 	double* testArr = sq3.getNewArr();
 	
-	/*
 
 	for (int i = 0; i < 30; i++) {
 		cout << "elements: " << testArr[i] << endl;
 	}
-	*/
 
+    cout << "end of file";
 	return 0;
 }
